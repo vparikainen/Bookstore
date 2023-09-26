@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Book {
+	//attribuutit
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
@@ -18,6 +19,7 @@ public class Book {
     private String isbn;
     private double price;
 
+    // konstruktorit
     public Book() {}
 
 	public Book(String title, String author, int year, String isbn, double price) {
@@ -29,6 +31,7 @@ public class Book {
 		this.price = price;
 	}
 
+	// getterit ja setterit
 	public Long getId() {
 		return id;
 	}
@@ -77,6 +80,7 @@ public class Book {
 		this.price = price;
 	}
 
+	// toString
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", title=" + title + ", author=" + author + ", year=" + year + ", isbn=" + isbn

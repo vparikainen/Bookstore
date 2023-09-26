@@ -16,45 +16,44 @@ import hh.sof03.bookstore.domain.BookRepository;
 @Controller
 public class BookController {
 	
+	// Spring-alusta luo sovelluksen käynnistyessä BookRepository-rajapintaa toteuttavan luokan olion 
+	// ja kytkee olion BookController-luokasta luodun olion attribuuttiolioksi
 	@Autowired
-	private BookRepository repository;
+	BookRepository bookRepository;
 	
-	private final List<Book> books = new ArrayList<Book>();
-	
-	@RequestMapping(value="/index", method = RequestMethod.GET)
-	public String getBooks(Model model) {
-		model.addAttribute("car", new Book());
-		model.addAttribute("books", books);
-		return "welcome";	
-	}
-	
+	// Listaa kirjat
 	@RequestMapping(value="/booklist", method = RequestMethod.GET)
-	public String bookList(Model model) {
-		model.addAttribute("books", repository.findAll());
-		return "booklist";
+	public String getBooks(Model model) {
+		List<Book> books = (List<Book>) bookRepository.findAll();
+		model.addAttribute("books", books);
+		return "booklist";	
 	}
 	
+	// Luo tyhjän kirjalomakkeen
 	@RequestMapping(value="add")
 	public String addBook(Model model) {
-		model.addAttribute("book", new Book());
+		model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
 		return "addBook";
 	}
 	
+	// Kirjalomakkeella syötettyjen tietojen vastaanotto ja tallennus
 	@RequestMapping(value="/save", method = RequestMethod.POST)
-	public String save(Book book) {
-		repository.save(book);
+	public String saveBook(Book book) {
+		bookRepository.save(book); // Tallennetaan yhden kirjan tiedot tietokantaan
 		return "redirect:booklist";
 	}
 	
+	// Poistaa kirjan
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
-		repository.deleteById(bookId);
+		bookRepository.deleteById(bookId);
 		return "redirect:/booklist";
 	}
 	
+	// Muokkaa kirjaa
 	@RequestMapping(value="edit/{id}")
-	public String editBook(@PathVariable("id") Long bookId, Model model) {
-		model.addAttribute("book", repository.findById(bookId));
+	public String editBook(@PathVariable("id") Long bookId, Model model) { // PathVariable löytää kirja-olion id:n perusteella
+		model.addAttribute("book", bookRepository.findById(bookId)); // korvataan olemassaoleva olio uudella ja laitetaan se samaan id:hen kuin edellinen
 		return "editbook";
 	}
 }
