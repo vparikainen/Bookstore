@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import hh.sof03.bookstore.domain.Book;
 import hh.sof03.bookstore.domain.BookRepository;
+import hh.sof03.bookstore.domain.CategoryRepository;
 
 @Controller
 public class BookController {
@@ -18,7 +19,10 @@ public class BookController {
 	// Spring-alusta luo sovelluksen käynnistyessä BookRepository-rajapintaa toteuttavan luokan olion 
 	// ja kytkee olion BookController-luokasta luodun olion attribuuttiolioksi
 	@Autowired
-	BookRepository bookRepository;
+	private BookRepository bookRepository;
+	// sama CategoryRepositorylle
+	@Autowired
+	private CategoryRepository catRepository;
 	
 	// Listaa kirjat
 	@RequestMapping(value="/booklist", method = RequestMethod.GET)
@@ -32,6 +36,7 @@ public class BookController {
 	@RequestMapping(value="/add")
 	public String addBook(Model model) {
 		model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
+		model.addAttribute("categories", catRepository.findAll());
 		return "addBook";
 	}
 	
@@ -53,6 +58,7 @@ public class BookController {
 	@RequestMapping(value="edit/{id}")
 	public String editBook(@PathVariable("id") Long bookId, Model model) { // PathVariable löytää kirja-olion id:n perusteella
 		model.addAttribute("book", bookRepository.findById(bookId)); // korvataan olemassaoleva olio uudella ja laitetaan se samaan id:hen kuin edellinen
+		model.addAttribute("categories", catRepository.findAll());
 		return "editbook";
 	}
 }
