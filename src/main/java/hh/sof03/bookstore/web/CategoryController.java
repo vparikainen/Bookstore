@@ -32,7 +32,7 @@ public class CategoryController {
 	@RequestMapping(value="/addCategory")
 	public String addCategory(Model model) {
 		model.addAttribute("category", new Category()); // "tyhjä" kategoria-olio
-		return "addCategory";
+		return "addcategory";
 	}
 	
 	// kategorialomakkeella syötettyjen tietojen vastaanotto ja  tallennus

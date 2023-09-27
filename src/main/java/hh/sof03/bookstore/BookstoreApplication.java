@@ -24,35 +24,22 @@ public class BookstoreApplication {
 
 	// testidatan luonti H2-testitietokantaan aina sovelluksen käynnistyessä
 	@Bean
-	public CommandLineRunner demo2(CategoryRepository catRepository) {
+	public CommandLineRunner bookDemo(BookRepository bRepository, CategoryRepository cRepository) {
 		return (args) -> {
 			Category c1 = new Category("Romance");
+			cRepository.save(c1);
 			Category c2 = new Category("Gothic");
+			cRepository.save(c2);
 			Category c3 = new Category("Poetry");
-			catRepository.save(c1);
-			catRepository.save(c2);
-			catRepository.save(c3);
-
-			log.info("fetch all the categories");
-			for (Category category : catRepository.findAll()) {
-				log.info(category.toString());
-			}
-		};
-	}
-	
-	@Bean
-	public CommandLineRunner demo(BookRepository bookRepository) {
-		return (args) -> {
-			Book b1 = new Book("Järki ja tunteet", "Jane Austen", 1811, "978-951-0-45636-1", 10.0);
-			Book b2 = new Book("Dorian Grayn Muotokuva", "Oscar Wilde", 1891, "978-951-1-25774-5", 15.0);
-			Book b3 = new Book("milk and honey", "Rupi Kaur", 2015, "978-1-4494-7425-6", 13.5);
-			bookRepository.save(b1);
-			bookRepository.save(b2);
-			bookRepository.save(b3);
+			cRepository.save(c3);
 			
+			bRepository.save(new Book("Järki ja tunteet", "Jane Austen", 1811, "978-951-0-45636-1", 10.0, c1));
+			bRepository.save(new Book("Dorian Grayn Muotokuva", "Oscar Wilde", 1891, "978-951-1-25774-5", 15.0, c2));
+			bRepository.save(new Book("milk and honey", "Rupi Kaur", 2015, "978-1-4494-7425-6", 13.5, c3));
+
 			// testidatan näyttö consolessa
 			log.info("fetch all books");
-			for (Book book : bookRepository.findAll()) {
+			for (Book book : bRepository.findAll()) {
 				log.info(book.toString());
 			}
 		};
