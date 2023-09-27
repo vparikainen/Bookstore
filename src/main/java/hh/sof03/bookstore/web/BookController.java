@@ -1,6 +1,5 @@
 package hh.sof03.bookstore.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class BookController {
 	}
 	
 	// Luo tyhjän kirjalomakkeen
-	@RequestMapping(value="add")
+	@RequestMapping(value="/add")
 	public String addBook(Model model) {
 		model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
 		return "addBook";
