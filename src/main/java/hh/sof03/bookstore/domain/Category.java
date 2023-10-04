@@ -2,6 +2,8 @@ package hh.sof03.bookstore.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Category {
 	
 	// category OneToMany Student
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+	@JsonIgnoreProperties("category") // vältetään ikuinen loop
 	private List<Book> books;
 	
 	// konstruktorit
