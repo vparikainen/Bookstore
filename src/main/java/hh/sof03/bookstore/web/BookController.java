@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hh.sof03.bookstore.domain.Book;
@@ -28,16 +28,12 @@ public class BookController {
 	private CategoryRepository cRepository;
 	
 	// Listaa kirjat
-	@GetMapping(value="/books")
-	public @ResponseBody List<Book> bookListRest() {
-		return (List<Book>) bRepository.findAll();
+	@GetMapping(value="/booklist")
+	public String getBooks(Model model) {
+		List<Book> books = (List<Book>) bRepository.findAll();
+		model.addAttribute("books", books);
+		return "booklist";	
 	}
-	
-	// haetaan kirja id:n perusteella
-		@GetMapping(value="/books/{id}")
-		public @ResponseBody Optional<Book> findBookRest(@PathVariable("id") Long bookId) {
-			return bRepository.findById(bookId);
-		}
 	
 	// Luo tyhjän kirjalomakkeen
 	@RequestMapping(value="/add")
@@ -48,14 +44,14 @@ public class BookController {
 	}
 	
 	// Kirjalomakkeella syötettyjen tietojen vastaanotto ja tallennus
-	@RequestMapping(value="/save", method = RequestMethod.POST)
+	@PostMapping(value="/save")
 	public String saveBook(Book book) {
 		bRepository.save(book); // Tallennetaan yhden kirjan tiedot tietokantaan
 		return "redirect:booklist";
 	}
 	
 	// Poistaa kirjan
-	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+	@GetMapping(value="/delete/{id}")
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 		bRepository.deleteById(bookId);
 		return "redirect:/booklist";
@@ -68,4 +64,5 @@ public class BookController {
 		model.addAttribute("categories", cRepository.findAll());
 		return "editbook";
 	}
+
 }
