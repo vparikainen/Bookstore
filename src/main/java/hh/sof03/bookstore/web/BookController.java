@@ -54,7 +54,7 @@ public class BookController {
 	// Poistaa kirjan
 	@GetMapping(value="/delete/{id}")
 	// vain admin-käyttäjä saa poistaa kirjan
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 		bRepository.deleteById(bookId);
 		return "redirect:/booklist";
