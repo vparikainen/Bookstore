@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class BookController {
 	// sama CategoryRepositorylle
 	@Autowired
 	private CategoryRepository cRepository;
-	
+
 	// Listaa kirjat
 	@GetMapping(value="/booklist")
 	public String getBooks(Model model) {
@@ -52,6 +53,8 @@ public class BookController {
 	
 	// Poistaa kirjan
 	@GetMapping(value="/delete/{id}")
+	// vain admin-käyttäjä saa poistaa kirjan
+	@PreAuthorize("hasRole('ADMIN')")
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 		bRepository.deleteById(bookId);
 		return "redirect:/booklist";
