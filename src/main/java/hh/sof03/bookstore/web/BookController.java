@@ -41,7 +41,7 @@ public class BookController {
 	public String addBook(Model model) {
 		model.addAttribute("book", new Book()); // "tyhjä" kirja-olio
 		model.addAttribute("categories", cRepository.findAll());
-		return "addBook";
+		return "addbook";
 	}
 	
 	// Kirjalomakkeella syötettyjen tietojen vastaanotto ja tallennus
