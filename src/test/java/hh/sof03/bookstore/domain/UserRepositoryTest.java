@@ -34,6 +34,7 @@ public class UserRepositoryTest {
 	public void findByEmailShouldReturnUser() {
 		List<User> users = userRepository.findByEmail("user@email.com");
 		assertThat(users).hasSize(1);
+		assertThat(users.get(0).getUsername()).isEqualTo("user");
 	}
 
 }
